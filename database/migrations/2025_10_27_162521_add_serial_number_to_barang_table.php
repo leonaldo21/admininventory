@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Tambahkan kolom serial_number ke tabel barang (jika belum ada)
+     */
+    public function up(): void
+    {
+        Schema::table('barang', function (Blueprint $table) {
+            // Tambah kolom hanya jika belum ada
+            if (!Schema::hasColumn('barang', 'serial_number')) {
+                $table->string('serial_number')->nullable()->after('nama_barang');
+            }
+        });
+    }
+
+    /**
+     * Hapus kolom serial_number dari tabel barang (jika ada)
+     */
+    public function down(): void
+    {
+        Schema::table('barang', function (Blueprint $table) {
+            // Hapus kolom hanya jika sudah ada
+            if (Schema::hasColumn('barang', 'serial_number')) {
+                $table->dropColumn('serial_number');
+            }
+        });
+    }
+};
