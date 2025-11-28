@@ -2,68 +2,119 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Barang Masuk - PIS Marine</title>
+    <title>Laporan Barang Masuk - PT PIS</title>
+
     <style>
         body {
-            font-family: "Arial", sans-serif;
-            font-size: 12px;
-            margin: 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 35px;
             color: #000;
         }
+
         .header {
-            text-align: center;
-            border-bottom: 2px solid #000;
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid #000;
             padding-bottom: 10px;
+            margin-bottom: 25px;
         }
         .header img {
-            width: 70px;
-            margin-bottom: 5px;
+            width: 90px;
+            height: auto;
+            margin-right: 20px;
         }
-        h2 {
-            margin: 5px 0 0 0;
-            font-size: 18px;
+
+        .company-info {
+            flex: 1;
+            text-align: center;
+        }
+        .company-info h1 {
+            font-size: 22px;
+            margin: 0;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
+        .company-info p {
+            margin: 3px 0;
+            font-size: 14px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 10px;
+            font-size: 13px;
         }
         th, td {
-            border: 1px solid #444;
-            padding: 6px 8px;
-            text-align: center;
+            border: 1px solid #000;
+            padding: 6px 10px;
+            text-align: left;
         }
         th {
-            background: #f4f4f4;
+            background: #f3f3f3;
+            text-transform: uppercase;
         }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        tbody tr:nth-child(even) {
+            background: #fafafa;
         }
+
+        .summary {
+            margin-top: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
         .footer {
-            margin-top: 40px;
+            margin-top: 50px;
             text-align: right;
-            font-size: 12px;
+            font-size: 13px;
         }
-        .total {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 10px;
+        .footer small {
+            color: #666;
         }
+
+        .no-print {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .no-print button, .no-print a {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .no-print button {
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .no-print a {
+            color: #333;
+        }
+
         @media print {
-            .no-print {
-                display: none;
-            }
+            .no-print { display: none; }
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+            tr { page-break-inside: avoid; }
+            body { margin: 20mm; }
+            img { visibility: visible !important; display: block !important; }
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
-        <img src="{{ public_path('images/logopis.png') }}" alt="Logo PIS">
-        <h2>LAPORAN BARANG MASUK</h2>
-        <p>PT PIS MARINE</p>
+        <img src="{{ asset('images/pislogo.png') }}" alt="Logo PIS">
+        <div class="company-info">
+            <h1>PT PIS</h1>
+            <p><strong>Laporan Barang Masuk</strong></p>
+            <p>Tanggal Cetak: {{ now()->format('d M Y') }}</p>
+        </div>
     </div>
 
     <table>
@@ -91,11 +142,18 @@
         </tbody>
     </table>
 
-    <p class="total">Total Barang Masuk: {{ $totalMasuk }}</p>
+    <div class="summary">
+        <p><strong>Total Barang Masuk:</strong> {{ $totalMasuk }}</p>
+    </div>
 
     <div class="footer">
         <p>Dicetak oleh: <strong>{{ $admin }}</strong></p>
-        <p>Tanggal Cetak: {{ now()->format('d F Y, H:i') }}</p>
+        <small>© {{ date('Y') }} PT PIS — Sistem Inventaris Barang</small>
+    </div>
+
+    <div class="no-print">
+        <button onclick="window.print()">🖨️ Cetak Halaman</button>
+        <a href="{{ route('barang_masuk.index') }}">⬅️ Kembali</a>
     </div>
 
 </body>
